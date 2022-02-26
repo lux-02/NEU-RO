@@ -1,17 +1,42 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+class Say extends React.Component {
+	render() {		
+		// bg_color = document.getElementById('wrap')
+		// bg_color.style.backgroundColor="{this.props.text}"
+		return(
+			<p>{this.props.text}</p>
+		);
+	}
+}
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+class Btn extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			value: 'Black',
+		};
+	}
+	
+	render() {
+		return (
+			<button className="square" onClick={() => this.setState({ value: 'White'})}>
+				<Say text = {this.state.value} />
+			</button>
+		);
+	}
+}
+
+class Main extends React.Component {
+	render() {
+		return (
+			<div id="wrap">
+				<Btn />
+			</div>
+		);
+	}
+}
+
+ReactDOM.render(<Main />, document.getElementById('root'));
