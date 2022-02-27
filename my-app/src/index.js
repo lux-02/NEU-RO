@@ -2,41 +2,68 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-class Say extends React.Component {
-	render() {		
-		// bg_color = document.getElementById('wrap')
-		// bg_color.style.backgroundColor="{this.props.text}"
-		return(
-			<p>{this.props.text}</p>
-		);
-	}
+function FormattedDate(props) {
+	return (
+		<h2>
+			{props.date.getFullYear() +
+				'년 ' +
+				(props.date.getMonth() + 1) +
+				'월 ' +
+				props.date.getDate() +
+				'일 ' +
+				props.date.getHours() +
+				'시 ' +
+				props.date.getMinutes() +
+				'분 ' +
+				props.date.getSeconds() +
+				'초'}
+		</h2>
+	);
 }
 
-class Btn extends React.Component {
+class Clock extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			value: 'Black',
-		};
+		this.state = { date: new Date() };
 	}
-	
-	render() {
-		return (
-			<button className="square" onClick={() => this.setState({ value: 'White'})}>
-				<Say text = {this.state.value} />
-			</button>
-		);
-	}
-}
 
-class Main extends React.Component {
+	tick() {
+		this.setState({
+			date: new Date(),
+		});
+	}
+
+	componentDidMount() {
+		//Timer 설정 / Mounting
+		this.timerID = setInterval(() => this.tick(), 1000);
+		this.setState({ comments: 'Yoonseok' });
+	}
+
+	componentWillMount() {
+		//Timer 해제 / Unmounting
+		clearInterval(this.timerID);
+	}
+
 	render() {
 		return (
-			<div id="wrap">
-				<Btn />
+			<div>
+				<h1>Hello, {this.state.comments}</h1>
+				<FormattedDate date={this.state.date} />
 			</div>
 		);
 	}
 }
 
-ReactDOM.render(<Main />, document.getElementById('root'));
+function App() {
+	return (
+		<div>
+			<Clock />
+			<Clock />
+			<Clock />
+		</div>
+	);
+}
+
+// class Wrap extends React.Component {}
+
+ReactDOM.render(<App />, document.getElementById('root'));
