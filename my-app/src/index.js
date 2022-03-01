@@ -5,7 +5,8 @@ import './index.css';
 function UserGreeting(props) {
 	return (
 		<div className="user_greet flex_contents">
-			<h1>Welcome Back!</h1>
+			<Clock name="Yoonseok" />
+			<h3>Welcome Back!</h3>
 			<Mailbox unreadMessages={message} />
 		</div>
 	);
@@ -14,7 +15,8 @@ function UserGreeting(props) {
 function GuestGreeting(props) {
 	return (
 		<div className="user_greet flex_contents">
-			<h1>Please Sign Up.</h1>
+			<Clock name="Guest" />
+			<h3>Please Sign Up.</h3>
 			<span>If you register as a member, you can use the mail service.</span>
 		</div>
 	);
@@ -40,12 +42,10 @@ function Mailbox(props) {
 	const unreadMessages = props.unreadMessages;
 	return (
 		<div>
-			<b>
-				<span>Hello!</span>
-				{unreadMessages.length > 0 && ( //둘 다 조건이 충족하면 뒤에 코드만 실행
-					<span> You have {unreadMessages.length} unread message.</span>
-				)}
-			</b>
+			<span>Hello!</span>
+			{unreadMessages.length > 0 && ( //둘 다 조건이 충족하면 뒤에 코드만 실행
+				<span> You have {unreadMessages.length} unread message.</span>
+			)}
 		</div>
 	);
 }
@@ -83,6 +83,58 @@ class Page extends React.Component {
 	}
 }
 
+function FormattedDate(props) {
+	return (
+		<h2>
+			{props.date.getFullYear() +
+				'년 ' +
+				(props.date.getMonth() + 1) +
+				'월 ' +
+				props.date.getDate() +
+				'일 ' +
+				props.date.getHours() +
+				'시 ' +
+				props.date.getMinutes() +
+				'분 ' +
+				props.date.getSeconds() +
+				'초'}
+		</h2>
+	);
+}
+
+class Clock extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = { date: new Date() };
+	}
+
+	tick() {
+		this.setState({
+			date: new Date(),
+		});
+	}
+
+	componentDidMount() {
+		//Timer 설정 / Mounting
+		this.timerID = setInterval(() => this.tick(), 1000);
+		this.setState({ name: this.props.name });
+	}
+
+	componentWillMount() {
+		//Timer 해제 / Unmounting
+		clearInterval(this.timerID);
+	}
+
+	render() {
+		return (
+			<div className="clock_area">
+				<h1>Hello, {this.state.name}</h1>
+				<FormattedDate date={this.state.date} />
+			</div>
+		);
+	}
+}
+
 class LoginControl extends React.Component {
 	constructor(props) {
 		super(props);
@@ -105,7 +157,9 @@ class LoginControl extends React.Component {
 		return (
 			<div className="wrap">
 				<div className="user_info flex_contents">
-					<span>The user is <b>{isLoggedIn ? 'currency' : 'not'}</b> logged in.</span>
+					<span>
+						The user is <b>{isLoggedIn ? 'currency' : 'not'}</b> logged in.
+					</span>
 				</div>
 				<Greeting isLoggedIn={isLoggedIn} />
 				<div className="user_btn flex_contents">
