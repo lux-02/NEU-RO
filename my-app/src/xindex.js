@@ -7,7 +7,7 @@ function UserGreeting(props) {
 		<div className="user_greet flex_contents">
 			<Clock name="Yoonseok" />
 			<h3>Welcome Back!</h3>
-			<Mailbox unreadMessages={message} />
+			<Mailbox unreadMessages={mails} />
 		</div>
 	);
 }
@@ -18,6 +18,7 @@ function GuestGreeting(props) {
 			<Clock name="Guest" />
 			<h3>Please Sign Up.</h3>
 			<span>If you register as a member, you can use the mail service.</span>
+			<SignUp/>
 		</div>
 	);
 }
@@ -38,14 +39,32 @@ function LogoutButton(props) {
 	return <button onClick={props.onClick}>Logout</button>;
 }
 
+function ListItem_header(props) {
+	return <li><b>{props.index}. id: #{props.id} Title: {props.title} <hr/></b></li>;
+}
+
+function ListItem_body(props) {
+	return <p>{props.contents}</p>;
+}
+
 function Mailbox(props) {
 	const unreadMessages = props.unreadMessages;
+	const listItems = unreadMessages.map((message, idx) => 
+		<div>
+			<ListItem_header id={message.id.toString()} index={idx+1} key={message.id.toString()} title={message.title} />
+			<ListItem_body key={message.id.toString()} contents={message.content} /><br/>
+		</div>
+	);
+
 	return (
 		<div>
-			<span>Hello!</span>
-			{unreadMessages.length > 0 && ( //둘 다 조건이 충족하면 뒤에 코드만 실행
-				<span> You have {unreadMessages.length} unread message.</span>
-			)}
+			<div className="message_count">
+				<span>Hello!</span>
+				{unreadMessages.length > 0 && ( //둘 다 조건이 충족하면 뒤에 코드만 실행
+					<span> You have {unreadMessages.length} unread message.</span>
+				)}
+			</div>
+			<ul>{listItems}</ul>
 		</div>
 	);
 }
@@ -135,6 +154,49 @@ class Clock extends React.Component {
 	}
 }
 
+class SignUp extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			user_name: 'Guest',
+			select: 'General'
+		};
+		
+		this.handleChange = this.handleChange.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
+	
+	handleChange(event){
+		const name = event.target.name;
+		this.setState({
+			[name]:event.target.value
+		});
+	}
+	
+	handleSubmit(event){
+		alert('Name: ' + this.state.name + "\n" +
+			'Select: ' + this.state.select);
+		event.preventDefault();
+	}
+	
+	render(){
+		return(
+			<form onSubmit={this.handleSubmit}>
+				<label>
+					<input name="name" type="text" value={this.state.name} onChange={this.handleChange} />
+				</label>
+				<label>
+					<select name="select" value={this.state.select} onChange={this.handleChange}>
+						<option select="general">General</option>
+						<option select="Enterprise">Enterprise</option>
+					</select>
+				</label>
+				<input type="submit" value="Submit"/>
+			</form>
+		)
+	}
+}
+
 class LoginControl extends React.Component {
 	constructor(props) {
 		super(props);
@@ -158,7 +220,7 @@ class LoginControl extends React.Component {
 			<div className="wrap">
 				<div className="user_info flex_contents">
 					<span>
-						The user is <b>{isLoggedIn ? 'currency' : 'not'}</b> logged in.
+						The user is <b>{isLoggedIn ? 'currently' : 'not'}</b> logged in.
 					</span>
 				</div>
 				<Greeting isLoggedIn={isLoggedIn} />
@@ -174,7 +236,16 @@ class LoginControl extends React.Component {
 	}
 }
 
-const message = ['React', 'Re: React', 'Re:Re:React', 'ssssss'];
+//const message = ['R1', 'R2', 'R3', 'R4'];
+
+const mails = [
+	{id: 1056, user_id: '한국발명진흥회', title: '기술 전시회 참가 안내', 
+	 content: '2022 말레이시아 쿠알라룸푸르 국제 발명, 혁신 기술 전시회'},
+	{id: 2465, user_id: 'Netflix', title: '오윤석 님이 시청할 다음 작품은?',
+	content: '넷플릭스 최신 등록 콘텐츠 안내: 소년심판, 서른 아홉, 기상청 사람들'},
+	{id: 3155, user_id: '네이버', title: '새로운 기기에서 로그인 되었습니다.',
+	content: '회원님의 아이디 oys**** 이(가) 새로운 기기(브라우저)에서 로그인 되었습니다.'}
+];
 
 //ReactDOM.render(<Mailbox unreadMessages={message} />, document.getElementById('root'));
 ReactDOM.render(<LoginControl />, document.getElementById('root'));

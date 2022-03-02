@@ -54,6 +54,12 @@ h1, h2, h3 {
 	font-size: 1em;
 }
 
+.wrap .user_greet .message_count {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .wrap .user_btn {
 	height: 20%;
 	background-color: lightcoral;
