@@ -2,101 +2,64 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-class NameForm extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {name: 'Write your name',
-					  essay: 'Please write an essay about your favorite DOM element.', 
-					  select: "Coconut"};
-		this.handleChange = this.handleChange.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
-	}
-	
-	handleChange(event) {
-		const name = event.target.name;
-		this.setState({
-			[name]:event.target.value
-		});
-	}
-	
-	handleSubmit(event) {
-		alert('Name: ' + this.state.name + "\n" +
-			'Essay: ' + this.state.essay + "\n" +
-			'Select: ' + this.state.select);
-		event.preventDefault();
-	}
-	
+// parseFloat=> 문자열->실수 변환
+
+class Calculator extends React.Component {	
 	render(){
 		return (
-			<form onSubmit={this.handleSubmit}>
-				<label>
-					name:
-					<input name="name" type="text" value={this.state.name} onChange={this.handleChange} />
-				</label>
-				<label>
-					Essay:
-					<textarea type="textarea" name="essay"  value={this.state.essay} onChange={this.handleChange}/>
-					</label>
-				<label>
-					Pick your favorite flavor:
-					<select name="select" value={this.state.select} onChange={this.handleChange}>
-						<option select="grapefruite">Grapefruite</option>
-						<option select="lime">Lime</option>
-						<option select="coconut">Coconut</option>
-						<option select="mango">Mango</option>
-					</select>
-				</label>
-				<input type="submit" value="Submit" />
-			</form>
-		)
-	}
-}
-
-class Reservation extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			isGoing: true,
-			numberOfGuests: 2
-		};
-		
-		this.handleInputChange = this.handleInputChange.bind(this);
-	}
-	
-	handleInputChange(event) {
-		const target = event.target;
-		const value = target.type === 'checkbox' ? target.checked : target.value;
-		const name = target.name;
-		
-		this.setState({
-			[name]: value
-		});
-	}
-	
-	render() {
-		return (
-			<form>
-				<label>
-					Is going: 
-					<input
-						name="isGoing"
-						type="checkbox"
-						checked={this.state.isGoing}
-						onChange={this.handleInputChange} />
-				</label>
-				<br />
-				<label>
-					Number of guests:
-					<input 
-						name="numberOfGuests"
-						type="number"
-						value={this.state.numberOfGuests}
-						onChange={this.handleInputChange} />
-				</label>
-			</form>
+			<div>
+				<TemperatureInput scale="c" />
+				<TemperatureInput scale="f" />
+			</div>
 		);
 	}
 }
 
+const scaleNames = {
+	c: 'Celsius',
+	f: 'Fahrenheit'
+}
 
-ReactDOM.render(<NameForm/>, document.getElementById('root'));
+class TemperatureInput extends React.Component {
+	constructor(props) {
+		super(props);
+		this.handleChange = this.handleChange.bind(this);
+		this.state = {temperature: ''};
+	}
+	
+	handleChange(e) {
+		this.setState({temperature: e.target.value});
+	}
+	
+	render() {
+		const temperature = this.state.temperature;
+		const scale = this.props.scale;
+		return (
+			<fieldset>
+				<legend>Enter temperature in {scaleNames[scale]}:</legend>
+				<input value={temperature}
+					onChange={this.handleChange} />
+			</fieldset>
+		);
+	}
+}
+
+function toCelsius(fahrenheit) {
+	return (fahrenheit - 32) * 5 / 9;
+}
+
+function toFahrenheit(celsius){
+	return (celsius * 9 / 5) + 32;
+}
+
+function tryConvert(temperature, convert) {
+	const input = parseFloat(temperature);
+	if(Number.isNaN(input)) {
+		return '';
+	}
+	const output = convert(input);
+	const rounded = Math.round(output * 1000) / 1000;
+	return rounded.toString();
+}
+
+ReactDOM.render(<Calculator />, document.getElementById('root'));
