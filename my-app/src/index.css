@@ -7,14 +7,15 @@ html, body, #root {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	flex-direction: column;
 }
 
 .text_area {
 	font-size: 2em;
-	background: white;
+	background: transparent;
 	font-weight: bold;
 	padding: 20px;
-	border: 10px solid black;
+	border-bottom: 10px solid black;
 }
 
 .ellipsis {
@@ -37,7 +38,6 @@ html, body, #root {
 .wrap .current_area .text_area {
 	width: 70%;
 	border: none;
-	border-bottom: 5px dotted black;
 	background: none;
 }
 
@@ -45,17 +45,50 @@ html, body, #root {
 	height: 80%;
 }
 
-.wrap .input_area .input_bar .text_area input {
+.wrap .input_area .tab_panel {
+	width: 80%;
+	height: 70%;
+	justify-content: space-around;
+}
+
+.wrap .input_area .tab_panel .input_tab {
+	height: 70%;
+}
+
+.wrap .input_area .tab_panel .btn_tab {
+	height: 30%;
+}
+
+
+.wrap .input_area .tab_panel .input_bar .text_area input {
 	background: none;
 	padding: none;
 	border: none;
 	height: 100%;
 	font-size: 1em;
 	font-weight: bold;
+	color: inherit;
 
 }
 
-.wrap .input_area .input_bar .text_area input:focus {
+.wrap .input_area .tab_panel .input_bar .text_area input:focus {
 	outline: none;
 	font-weight: bold;
+}
+
+.wrap .input_area .tab_panel .input_bar .picker_area {
+	font-size: 2em;
+	font-weight: bold;
+}
+
+.wrap .input_area .tab_panel .input_bar .picker_area input {
+	border: none;
+}
+
+
+.wrap .input_area .tab_panel button {
+	border: none;
+	background: black;
+	color: white;
+	font-size: 2em;
 }
