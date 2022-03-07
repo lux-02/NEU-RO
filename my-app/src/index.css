@@ -1,7 +1,4 @@
-html, body, #root {
-	width: 100%;
-	height: 100%;
-}
+@charset "utf-8";
 
 .flex {
 	display: flex;
@@ -10,85 +7,67 @@ html, body, #root {
 	flex-direction: column;
 }
 
-.text_area {
-	font-size: 2em;
-	background: transparent;
-	font-weight: bold;
-	padding: 20px;
-	border-bottom: 10px solid black;
-}
-
-.ellipsis {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-.wrap {
+html, body, #root, .wrap {
 	width: 100%;
 	height: 100%;
-	display: flex;
-	flex-direction: column;
 }
 
-.wrap .current_area {
-	height: 20%;
+.wrap .header_area {
+	width: 100%;
+	height: 10%;
+	flex-direction: row;
 }
 
-.wrap .current_area .text_area {
-	width: 70%;
-	border: none;
-	background: none;
+.wrap .header_area .logo {
+	width: 20%;
 }
 
-.wrap .input_area {
-	height: 80%;
+.wrap .header_area .search_bar {
+	width: 60%;
 }
 
-.wrap .input_area .tab_panel {
-	width: 80%;
-	height: 70%;
-	justify-content: space-around;
+.wrap .header_area .plus_contents {
+	width: 20%
 }
 
-.wrap .input_area .tab_panel .input_tab {
-	height: 70%;
+.wrap .contents_area {
+	height: 90%;
+	width: 100%;
+	flex-wrap: wrap;
+	flex-direction: row;
 }
 
-.wrap .input_area .tab_panel .btn_tab {
-	height: 30%;
-}
-
-
-.wrap .input_area .tab_panel .input_bar .text_area input {
-	background: none;
-	padding: none;
-	border: none;
-	height: 100%;
-	font-size: 1em;
-	font-weight: bold;
-	color: inherit;
-
-}
-
-.wrap .input_area .tab_panel .input_bar .text_area input:focus {
-	outline: none;
-	font-weight: bold;
-}
-
-.wrap .input_area .tab_panel .input_bar .picker_area {
-	font-size: 2em;
-	font-weight: bold;
-}
-
-.wrap .input_area .tab_panel .input_bar .picker_area input {
-	border: none;
-}
-
-
-.wrap .input_area .tab_panel button {
-	border: none;
-	background: black;
+.wrap .contents_area a:hover {
 	color: white;
-	font-size: 2em;
 }
+
+.wrap .contents_area .contents_items {
+	margin: 50px;
+	background: lightblue;
+	width: 300px;
+	height: 350px;
+}
+
+
+.wrap .contents_area .contents_items .contents_article {
+	height: 80%;
+	width: 100%;
+	background: lightskyblue;
+}
+
+.wrap .contents_area .contents_items .contents_bottom {
+	height: 20%;
+	width: 100%;
+	background: lightblue;
+	flex-direction: row;
+	
+}
+
+.wrap .contents_area .contents_items .contents_bottom .contents_index {
+	width: 30%;
+}
+
+.wrap .contents_area .contents_items .contents_bottom .contents_title {
+	width: 70%;
+}
+

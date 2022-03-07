@@ -1,0 +1,94 @@
+html, body, #root {
+	width: 100%;
+	height: 100%;
+}
+
+.flex {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.text_area {
+	font-size: 2em;
+	background: transparent;
+	font-weight: bold;
+	padding: 20px;
+	border-bottom: 10px solid black;
+}
+
+.ellipsis {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.wrap {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.wrap .current_area {
+	height: 20%;
+}
+
+.wrap .current_area .text_area {
+	width: 70%;
+	border: none;
+	background: none;
+}
+
+.wrap .input_area {
+	height: 80%;
+}
+
+.wrap .input_area .tab_panel {
+	width: 80%;
+	height: 70%;
+	justify-content: space-around;
+}
+
+.wrap .input_area .tab_panel .input_tab {
+	height: 70%;
+}
+
+.wrap .input_area .tab_panel .btn_tab {
+	height: 30%;
+}
+
+
+.wrap .input_area .tab_panel .input_bar .text_area input {
+	background: none;
+	padding: none;
+	border: none;
+	height: 100%;
+	font-size: 1em;
+	font-weight: bold;
+	color: inherit;
+
+}
+
+.wrap .input_area .tab_panel .input_bar .text_area input:focus {
+	outline: none;
+	font-weight: bold;
+}
+
+.wrap .input_area .tab_panel .input_bar .picker_area {
+	font-size: 2em;
+	font-weight: bold;
+}
+
+.wrap .input_area .tab_panel .input_bar .picker_area input {
+	border: none;
+}
+
+
+.wrap .input_area .tab_panel button {
+	border: none;
+	background: black;
+	color: white;
+	font-size: 2em;
+}
