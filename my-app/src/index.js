@@ -3,33 +3,39 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import './reset.css';
 
-
-class ContentsIndex extends React.Component {
+class ContentsUpload extends React.Component {
 	render() {
-		return <div className="contents_index flex">idx</div>;
+		return <div className="contents_upload flex">{this.props.upload}</div>;
 	}
 }
 
 class ContentsTitle extends React.Component {
 	render() {
-		return <div className="contents_title flex">Title</div>;
+		return <div className="contents_title flex">{this.props.title}</div>;
 	}
 }
 
 class ContentsArticle extends React.Component {
 	render() {
-		return <div className="contents_article flex">article</div>;
+		return (
+			<div className="contents_article flex">
+				<img src={this.props.img}/>
+			</div>
+		);
 	}
 }
 
 class ContentsItem extends React.Component {
 	render() {
-		return(
+		return (
 			<div className="contents_items flex">
-				<ContentsArticle/>
+				<ContentsArticle contents={this.props.img} />
 				<div className="contents_bottom flex">
-					<ContentsIndex/>
-					<ContentsTitle/>
+					<ContentsUpload
+						upload={this.props.upload}
+						alt={this.props.title}
+					/>
+					<ContentsTitle title={this.props.title} />
 				</div>
 			</div>
 		);
@@ -37,12 +43,12 @@ class ContentsItem extends React.Component {
 }
 
 class Plus extends React.Component {
-	render(){
-		return(
+	render() {
+		return (
 			<div className="plus_contents">
 				<button>Update</button>
 			</div>
-		)
+		);
 	}
 }
 
@@ -59,27 +65,37 @@ class SearchBar extends React.Component {
 }
 
 class Logo extends React.Component {
-	render(){
-		return(
+	render() {
+		return (
 			<div className="logo flex">
-				<p><b>TODO</b></p>
+				<p>NEU/RO</p>
 			</div>
-		)
+		);
 	}
 }
 
 class Contents extends React.Component {
 	render() {
+		const clist = this.props.list;
+		const clist_items = clist.map((contents, idx) => (
+			<div>
+				<a href={contents.url}>
+					<ContentsItem
+						img={contents.img}
+						contents={contents.contents}
+						title={contents.title}
+						key={contents.title}
+						field={contents.field}
+						idx={idx}
+					/>
+				</a>
+			</div>
+		));
+		const cnt_list = clist_items.length;
 		return (
 			<div className="contents_area flex">
-				<a href="#" alert="#"><ContentsItem /></a>
-				<ContentsItem />
-				<ContentsItem />
-				<ContentsItem />
-				<ContentsItem />
-				<ContentsItem />
-				<ContentsItem />
-				<ContentsItem />
+				<p>{cnt_list}개의 뉴스레터를 만나보세요.</p>
+				{clist_items}
 			</div>
 		);
 	}
@@ -89,7 +105,7 @@ class Header extends React.Component {
 	render() {
 		return (
 			<div className="header_area flex">
-				<Logo/>
+				<Logo />
 				<SearchBar />
 				<Plus />
 			</div>
@@ -102,10 +118,106 @@ class Wrap extends React.Component {
 		return (
 			<div className="wrap flex">
 				<Header />
-				<Contents />
+				<Contents list={contents_list} />
 			</div>
 		);
 	}
 }
+
+const contents_list = [
+	{
+		field: 'IT',
+		title: 'ZDNet Korea',
+		img: './test.png',
+		upload: '매일',
+		url: 'http://www.zdnet.co.kr/',
+		contents: '국내 IT전문 언론사 중 가장 폭 넒은 범위의 기사를 제공',
+	},
+	{
+		field: 'IT',
+		title: 'ITWorld Korea',
+		img: 'https://bit.ly/3KqqJAl',
+		upload: '매일',
+		url: 'http://www.itworld.co.kr',
+		contents:
+			' IDG사에서 운영하는 IT 언론. 해외 기사를 번역해 제공. 뉴스보다는 칼럼, 아티클, 리포트, 리뷰 등이 많음',
+	},
+	{
+		field: 'IT',
+		title: 'CIO Korea',
+		img: 'https://bit.ly/3KqqJAl',
+		upload: '매일',
+		url: 'http://www.ciokorea.com',
+		contents:
+			'ITWorld와 같이 IDG사에서 운영하는 언론사. 관리자 급을 타깃으로 한 내용이 주를 이름',
+	},
+	{
+		field: 'IT',
+		title: 'VIEWS LETTER',
+		img: 'https://bit.ly/3KqqJAl',
+		upload: '매일',
+		url: 'https://themiilk.com/',
+		contents: '미국 실리콘밸리 현장의 소식 및 인사이트 등	',
+	},
+	{
+		field: 'IT',
+		title: '블로터',
+		img: 'https://bit.ly/3KqqJAl',
+		upload: '매일',
+		url: 'http://www.bloter.net/',
+		contents:
+			'ZDNet Korea보다 정보의 양은 적지만 선별된 이슈 및 트렌드에 대한 심도 깊은 기사를 제공',
+	},
+	{
+		field: 'IT',
+		title: '바이라인네트워크',
+		img: 'https://bit.ly/3KqqJAl',
+		upload: '매일',
+		url: 'https://byline.network/',
+		contents:
+			"블로터보다 더 적은 양의 기사이지만 더 심도 깊은 이슈 분석 기사를 제공. 스타트업, 유통 소식이 많음 (팟캐스트 'IT TMI'도 운영 중)",
+	},
+	{
+		field: 'IT',
+		title: 'TECHWORLD',
+		img: 'https://bit.ly/3KqqJAl',
+		upload: '매월',
+		url: 'http://www.epnc.co.kr/',
+		contents: '소재, 솔루션 등에 대한 인더스트리 관련 정보가 많음',
+	},
+	{
+		field: 'IT',
+		title: 'techNeedle',
+		img: 'https://bit.ly/3KqqJAl',
+		upload: '수시',
+		url: 'http://techneedle.com/',
+		contents: '주로 실리콘밸리에서 근무 또는 거주하는 IT업 종사자의 칼럼 형식 기사를 제공',
+	},
+	{
+		field: 'IT',
+		title: '모비인사이드',
+		img: 'https://bit.ly/3KqqJAl',
+		upload: '매월',
+		url: 'https://www.mobiinside.com/kr/',
+		contents: '주로 스타트업, 벤처캐피탈 전반의 소식을 제공',
+	},
+	{
+		field: 'IT',
+		title: '플래텀',
+		img: 'https://bit.ly/3KqqJAl',
+		upload: '매월',
+		url: 'https://platum.kr/',
+		contents: '스타트업 소식 전문 언론',
+	},
+	{
+		field: 'IT',
+		title: 'Startup Weekly',
+		img: 'https://bit.ly/3KqqJAl',
+		upload: '매월',
+		url: 'http://www.startupweekly.net/news',
+		contents:
+			'엑싯/투자, 성과/지표, 출시/업데이트, 정책/지원, 업계 동향, 해외 뉴스, 행사/모임 카테고리 별 핵심 기사 리스트를 제공',
+	},
+];
 
 ReactDOM.render(<Wrap />, document.getElementById('root'));
