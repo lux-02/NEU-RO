@@ -15,11 +15,23 @@ class ContentsTitle extends React.Component {
 	}
 }
 
+class ContentsBottom extends React.Component {
+	render() {
+		return (
+			<div className="contents_bottom flex ">
+				<ContentsUpload upload={this.props.upload} />
+				<ContentsTitle title={this.props.title} />
+			</div>
+		);
+	}
+}
+
 class ContentsArticle extends React.Component {
 	render() {
 		return (
 			<div className="contents_article flex">
-				<img src={this.props.img}/>
+				<img src={this.props.img} alt={this.props.alt} />
+				<div class="contents_section flex"><p>{this.props.con}</p></div>
 			</div>
 		);
 	}
@@ -29,24 +41,27 @@ class ContentsItem extends React.Component {
 	render() {
 		return (
 			<div className="contents_items flex">
-				<ContentsArticle contents={this.props.img} />
-				<div className="contents_bottom flex">
-					<ContentsUpload
-						upload={this.props.upload}
-						alt={this.props.title}
-					/>
-					<ContentsTitle title={this.props.title} />
-				</div>
+				<ContentsArticle con={this.props.con} img={this.props.img} alt={this.props.title} />
+				<ContentsBottom upload={this.props.upload} title={this.props.title} />
 			</div>
 		);
 	}
 }
 
 class Plus extends React.Component {
+	constructor(props) {
+		super(props);
+		this.handleContentsInput = this.handleContentsInput.bind(this);
+	}
+
+	handleContentsInput(e) {
+		console.log(e);
+	}
+
 	render() {
 		return (
 			<div className="plus_contents">
-				<button>Update</button>
+				<button onClick={this.handleContentsInput}>Update</button>
 			</div>
 		);
 	}
@@ -56,9 +71,7 @@ class SearchBar extends React.Component {
 	render() {
 		return (
 			<div className="search_bar flex">
-				<p>
-					Search: <input type="text" placeholder="Contents..." />
-				</p>
+				<input type="text" placeholder="Search..." />
 			</div>
 		);
 	}
@@ -74,30 +87,37 @@ class Logo extends React.Component {
 	}
 }
 
+class ContentsCnt extends React.Component {
+	render() {
+		return (
+			<div className="contents_cnt flex">
+				<p>지금 {this.props.cnt}개의 뉴스레터를 만나보세요.</p>
+			</div>
+		);
+	}
+}
+
 class Contents extends React.Component {
 	render() {
 		const clist = this.props.list;
-		const clist_items = clist.map((contents, idx) => (
-			<div>
-				<a href={contents.url}>
+		const clist_items = clist.map((contents) => (
+			<div className="clist">
+				<a className="clist_alink" href={contents.url}>
 					<ContentsItem
 						img={contents.img}
 						contents={contents.contents}
 						title={contents.title}
 						key={contents.title}
 						field={contents.field}
-						idx={idx}
+						con={contents.contents}
+						upload={contents.upload}
+						
 					/>
 				</a>
 			</div>
 		));
-		const cnt_list = clist_items.length;
-		return (
-			<div className="contents_area flex">
-				<p>{cnt_list}개의 뉴스레터를 만나보세요.</p>
-				{clist_items}
-			</div>
-		);
+
+		return <div className="contents_area flex">{clist_items}</div>;
 	}
 }
 
@@ -105,6 +125,7 @@ class Header extends React.Component {
 	render() {
 		return (
 			<div className="header_area flex">
+				{this.props.cnt}
 				<Logo />
 				<SearchBar />
 				<Plus />
@@ -118,6 +139,7 @@ class Wrap extends React.Component {
 		return (
 			<div className="wrap flex">
 				<Header />
+				<ContentsCnt cnt={contents_list.length} />
 				<Contents list={contents_list} />
 			</div>
 		);
@@ -128,7 +150,7 @@ const contents_list = [
 	{
 		field: 'IT',
 		title: 'ZDNet Korea',
-		img: './test.png',
+		img: 'https://bit.ly/3KqqJAl',
 		upload: '매일',
 		url: 'http://www.zdnet.co.kr/',
 		contents: '국내 IT전문 언론사 중 가장 폭 넒은 범위의 기사를 제공',
