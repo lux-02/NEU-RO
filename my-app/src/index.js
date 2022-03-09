@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import './reset.css';
 
+
 class ContentsUpload extends React.Component {
 	render() {
 		return <div className="contents_upload flex">{this.props.upload}</div>;
