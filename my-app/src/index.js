@@ -71,10 +71,19 @@ class Plus extends React.Component {
 }
 
 class SearchBar extends React.Component {
+	constructor(props){
+		super(props);
+		this.handleSearchTitle = this.handleSearchTitle.bind(this);
+	}
+	
+	handleSearchTitle(e) {
+		this.props.onSearch(e.target.value.toUpperCase());
+	}
+	
 	render() {
 		return (
 			<div className="search_bar flex">
-				<input type="text" placeholder="Search..." />
+				<input type="text" placeholder="Search..." value={this.props.search} onChange={this.handleSearchTitle} />
 			</div>
 		);
 	}
@@ -129,24 +138,29 @@ class ContentsCnt extends React.Component {
 
 class Contents extends React.Component {
 	render() {
-		const clist = this.props.list;
-		const clist_items = clist.map((contents) => (
-			<div className="clist">
+		const filterText = this.props.search;
+		const rows = [];
+		const clist = this.props.list
+		
+		clist.forEach((contents) => {
+			if(contents.title.indexOf(filterText)===-1){
+				return ;
+			}
+			rows.push(<div className="clist">
 				<a className="clist_alink" target="_blank" href={contents.url}>
 					<ContentsItem
 						img={contents.img}
 						contents={contents.contents}
-						title={contents.title}
-						key={contents.title}
+						title={contents.title.toUpperCase()}
+						key={contents.title.toUpperCase()}
 						field={contents.field}
 						con={contents.contents}
 						upload={contents.upload}
 					/>
 				</a>
-			</div>
-		));
-
-		return <div className="contents_area flex">{clist_items}</div>;
+			</div>)
+		})
+		return <div className="contents_area flex">{console.log(rows)}{rows}</div>;
 	}
 }
 
@@ -156,7 +170,7 @@ class Header extends React.Component {
 			<div className="header_area flex">
 				{this.props.cnt}
 				<Logo />
-				<SearchBar />
+				<SearchBar search={this.props.search} onSearch={this.props.onSearch} />
 				<Plus />
 			</div>
 		);
@@ -164,17 +178,39 @@ class Header extends React.Component {
 }
 
 class Wrap extends React.Component {
+	constructor(props){
+		super(props);
+		this.state={
+			search: '',
+		};
+		this.handleSearchTitle = this.handleSearchTitle.bind(this);
+	}
+	
+	handleSearchTitle(keyword) {
+		this.setState({
+			search: keyword,
+		});
+	}
+	
 	render() {
 		return (
 			<div className="wrap flex">
-				<Header />
+				{console.log(this.state.search)}
+				<Header search={this.state.search} onSearch={this.handleSearchTitle} />
 				<ContentsCnt cnt={contents_list.length} />
 				<ContentsFilterArea list={category_list} />
-				<Contents list={contents_list} />
+				<Contents list={contents_list} search={this.state.search}  />
 			</div>
 		);
 	}
 }
+
+
+
+
+
+// 임시 데이터 영역
+
 
 const non_img =
 	'https://images.unsplash.com/photo-1594322436404-5a0526db4d13?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1129&q=80';
@@ -184,7 +220,7 @@ const category_list = ['IT', 'Trends', 'UI/UX', 'Culture'];
 const contents_list = [
 	{
 		field: 'IT',
-		title: 'ZDNet Korea',
+		title: 'ZDNET KOREA',
 		img: 'https://zdnet.co.kr/images/footer_logo.png',
 		upload: '매일',
 		url: 'http://www.zdnet.co.kr/',
@@ -192,7 +228,7 @@ const contents_list = [
 	},
 	{
 		field: 'IT',
-		title: 'ITWorld Korea',
+		title: 'ITWORLD KOREA',
 		img: 'https://www.itworld.co.kr/_images/common/logo-itw.svg',
 		upload: '매일',
 		url: 'http://www.itworld.co.kr',
@@ -201,7 +237,7 @@ const contents_list = [
 	},
 	{
 		field: 'IT',
-		title: 'CIO Korea',
+		title: 'CIO KOREA',
 		img: 'https://www.ciokorea.com/_images/common/logo-cio.svg',
 		upload: '매일',
 		url: 'http://www.ciokorea.com',
@@ -218,7 +254,7 @@ const contents_list = [
 	},
 	{
 		field: 'IT',
-		title: '블로터',
+		title: 'BLOTER',
 		img:
 			'https://scontent-ssn1-1.xx.fbcdn.net/v/t1.6435-9/118424228_3807028145980697_7355663210502523866_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=e3f864&_nc_ohc=xwuiWDiDa-oAX8fZflz&_nc_ht=scontent-ssn1-1.xx&oh=00_AT-2H6sam28FTP6hecnnWY_ob0VhGG6p06vjP144SSpzSw&oe=624E69FA',
 		upload: '매일',
@@ -228,7 +264,7 @@ const contents_list = [
 	},
 	{
 		field: 'IT',
-		title: '바이라인네트워크',
+		title: 'BYLINE NETWORK',
 		img:
 			'https://yt3.ggpht.com/WArkdlAhJ-WrRsiBfs8n3evaNKhOnR8ioRaQ0aElm5SekROCPi-teEtodf4a6E1_mAHKCqeioQ=w1707-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj',
 		upload: '매일',
@@ -246,7 +282,7 @@ const contents_list = [
 	},
 	{
 		field: 'IT',
-		title: 'techNeedle',
+		title: 'TECHNEEDLE',
 		img:
 			'https://scontent-ssn1-1.xx.fbcdn.net/v/t1.6435-9/31947193_1517493948357146_5727339271468089344_n.png?_nc_cat=105&ccb=1-5&_nc_sid=e3f864&_nc_ohc=UFsNfIadw0oAX8g9Vz-&_nc_ht=scontent-ssn1-1.xx&oh=00_AT-D7u0WYA-5lWaEPhd8ShgphP_bYgMzYY2sFjvNYPI7Fw&oe=624D3AB9',
 		upload: '수시',
@@ -255,7 +291,7 @@ const contents_list = [
 	},
 	{
 		field: 'IT',
-		title: '모비인사이드',
+		title: 'MOBIINSIDE',
 		img: non_img,
 		upload: '매월',
 		url: 'https://www.mobiinside.com/kr/',
@@ -263,7 +299,7 @@ const contents_list = [
 	},
 	{
 		field: 'IT1',
-		title: '플래텀',
+		title: 'PLATUM',
 		img: 'https://platum.kr/wp-content/uploads/2016/11/logo-2.png',
 		upload: '매월',
 		url: 'https://platum.kr/',
@@ -271,7 +307,7 @@ const contents_list = [
 	},
 	{
 		field: 'IT2',
-		title: 'Startup Weekly',
+		title: 'STARTUP WEEKLY',
 		img: non_img,
 		upload: '매월',
 		url: 'http://www.startupweekly.net/news',
