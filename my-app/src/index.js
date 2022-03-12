@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import './reset.css';
 
-
 class ContentsUpload extends React.Component {
 	render() {
 		return <div className="contents_upload flex">{this.props.upload}</div>;
@@ -71,19 +70,24 @@ class Plus extends React.Component {
 }
 
 class SearchBar extends React.Component {
-	constructor(props){
+	constructor(props) {
 		super(props);
 		this.handleSearchTitle = this.handleSearchTitle.bind(this);
 	}
-	
+
 	handleSearchTitle(e) {
 		this.props.onSearch(e.target.value.toUpperCase());
 	}
-	
+
 	render() {
 		return (
 			<div className="search_bar flex">
-				<input type="text" placeholder="Search..." value={this.props.search} onChange={this.handleSearchTitle} />
+				<input
+					type="text"
+					placeholder="Search..."
+					value={this.props.search}
+					onChange={this.handleSearchTitle}
+				/>
 			</div>
 		);
 	}
@@ -99,28 +103,59 @@ class Logo extends React.Component {
 	}
 }
 
-class ContentsFilterCategory extends React.Component {
+class AllCategory extends React.Component {
 	render() {
 		return (
-			<div className="contents_filterCategory flex">
-				{this.props.category}
-				
+			<div className="contents_filterCategory">
+				<button>ALL</button>
 			</div>
 		);
 	}
 }
 
+class ContentsFilterCategory extends React.Component {
+	constructor(props) {
+		super(props);
+		this.handleCheckCategory = this.handleCheckCategory.bind(this);
+	}
 
+	handleCheckCategory(e) {
+		this.props.onCheckCategory(e.target.value);
+	}
+
+	render() {
+		return (
+			<div className="contents_filterCategory flex">
+				<label>
+					<input
+						type="checkbox"
+						checked={this.props.checked}
+						onChange={this.handleCheckCategory}
+						name="category"
+						category={this.props.category}
+					/>
+					{this.props.category}
+				</label>
+			</div>
+		);
+	}
+}
 
 class ContentsFilterArea extends React.Component {
 	render() {
-		const clist = this.props.list;
-		const clist_items = clist.map((category) =>(
-			<ContentsFilterCategory key={category} category={category}/>
+		const clist = this.props.clist;
+		const ulist = this.props.ulist;
+		const clist_items = clist.map((category) => (
+			<ContentsFilterCategory onCheckCategory={this.props.onCheckCategory} key={category} category={category} />
+		));
+		const ulist_items = ulist.map((upload) => (
+			<ContentsFilterCategory key={upload} category={upload} />
 		));
 		return (
 			<div className="contents_filter_area flex">
+				<AllCategory />
 				{clist_items}
+				{ulist_items}
 			</div>
 		);
 	}
@@ -140,27 +175,34 @@ class Contents extends React.Component {
 	render() {
 		const filterText = this.props.search;
 		const rows = [];
-		const clist = this.props.list
-		
+		const clist = this.props.list;
+
 		clist.forEach((contents) => {
-			if(contents.title.indexOf(filterText)===-1){
-				return ;
+			if (contents.title.indexOf(filterText) === -1) {
+				return;
 			}
-			rows.push(<div className="clist">
-				<a className="clist_alink" target="_blank" href={contents.url}>
-					<ContentsItem
-						img={contents.img}
-						contents={contents.contents}
-						title={contents.title.toUpperCase()}
-						key={contents.title.toUpperCase()}
-						field={contents.field}
-						con={contents.contents}
-						upload={contents.upload}
-					/>
-				</a>
-			</div>)
-		})
-		return <div className="contents_area flex">{console.log(rows)}{rows}</div>;
+			rows.push(
+				<div className="clist">
+					<a className="clist_alink" target="_blank" href={contents.url}>
+						<ContentsItem
+							img={contents.img}
+							contents={contents.contents}
+							title={contents.title.toUpperCase()}
+							key={contents.title.toUpperCase()}
+							field={contents.field}
+							con={contents.contents}
+							upload={contents.upload}
+						/>
+					</a>
+				</div>
+			);
+		});
+		return (
+			<div className="contents_area flex">
+				{console.log(rows)}
+				{rows}
+			</div>
+		);
 	}
 }
 
@@ -178,44 +220,51 @@ class Header extends React.Component {
 }
 
 class Wrap extends React.Component {
-	constructor(props){
+	constructor(props) {
 		super(props);
-		this.state={
+		this.state = {
 			search: '',
+			checked: []
 		};
 		this.handleSearchTitle = this.handleSearchTitle.bind(this);
+		this.handleCheckCategory = this.handleCheckCategory.bind(this);
 	}
-	
+
 	handleSearchTitle(keyword) {
 		this.setState({
 			search: keyword,
 		});
 	}
+
+	handleCheckCategory(checked) {
+		this.setState({
+			checked: [checked]
+		});
+	}
 	
 	render() {
+		const filterBox = document.querySelectorAll('input[name="category"]:checked').category;
 		return (
 			<div className="wrap flex">
 				{console.log(this.state.search)}
+				{console.log(filterBox)}
 				<Header search={this.state.search} onSearch={this.handleSearchTitle} />
 				<ContentsCnt cnt={contents_list.length} />
-				<ContentsFilterArea list={category_list} />
-				<Contents list={contents_list} search={this.state.search}  />
+				<ContentsFilterArea onCheckCategory={this.handleCheckCategory} clist={category_list} ulist={upload_list} />
+				<Contents list={contents_list} search={this.state.search} />
 			</div>
 		);
 	}
 }
 
-
-
-
-
 // 임시 데이터 영역
-
 
 const non_img =
 	'https://images.unsplash.com/photo-1594322436404-5a0526db4d13?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1129&q=80';
 
 const category_list = ['IT', 'Trends', 'UI/UX', 'Culture'];
+
+const upload_list = ['매일', '매월', '수시'];
 
 const contents_list = [
 	{
