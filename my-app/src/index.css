@@ -48,7 +48,6 @@ html, body, #root, .wrap {
 	font-weight: bolder;
 	font-family: "JSongMyung-Regular-KO";
 	font-size: 2vw;
-	justify-content: end;
 	line-height: 0.7;
 }
 
@@ -56,7 +55,6 @@ html, body, #root, .wrap {
 	width: 60%;
 	height: 100%;
 	font-size: 1.5em;
-	justify-content: end;
 }
 
 .wrap .header_area .search_bar input {
@@ -80,7 +78,6 @@ html, body, #root, .wrap {
 .wrap .header_area .plus_contents {
 	width: 20%;
 	height: 100%;
-	justify-content: end;
 }
 
 .wrap .header_area .plus_contents button {
