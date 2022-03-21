@@ -167,7 +167,7 @@ class ContentsCnt extends React.Component {
 	render() {
 		return (
 			<div className="contents_cnt flex">
-				<p>당신을 위한 {this.props.cnt}개의 뉴스레터를 만나보세요.</p>
+				<p>당신이 좋아할만한 {this.props.cnt}개의 뉴스레터를 준비했어요.</p>
 			</div>
 		);
 	}

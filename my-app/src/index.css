@@ -98,19 +98,20 @@ html, body, #root, .wrap {
 	height: 10%;
 	width: 100%;
 	font-size: 1.2em;
-	justify-content: end;
 	color: darkgray;
+	margin-bottom: 16px;
 }
 
 .wrap .contents_filter_area {
 	height: 10%;
 	width: 100%;
 	flex-direction: row;
+	border: 1px solid black;
 }
 
 .wrap .contents_filter_area .contents_filterCategory {
 	margin: 0px 20px;
-	font-size: 1.2em`;
+	font-size: 1.2em;
 }
 
 .wrap .contents_area {
